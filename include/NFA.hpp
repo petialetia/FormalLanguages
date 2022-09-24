@@ -35,6 +35,8 @@ class NFA
 
     const TransitionsStorage& GetTransitions() const;
 
+    std::unordered_map<StateId, std::unordered_set<std::string>>& operator[](StateId id);
+
   private:
     void EvaluateNextStateId();
 

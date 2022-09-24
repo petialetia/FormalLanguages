@@ -1,7 +1,5 @@
 #include <MinimalDFA.hpp>
 
-#include <iostream>
-
 int main()
 {
     auto nfa = NFA();
@@ -17,6 +15,10 @@ int main()
     nfa.AddTransition(b, b, EPSILON);
 
     nfa.AddTransition(c, b, "aboba");
+
+    nfa.AddTransition(b, a, EPSILON);
+
+    RemoveEpsilonTransitions(nfa);
 
     SaveInDOA(nfa);
 

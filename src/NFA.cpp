@@ -62,6 +62,11 @@ const TransitionsStorage& NFA::GetTransitions() const
     return transitions_;
 }
 
+std::unordered_map<StateId, std::unordered_set<std::string>>& NFA::operator[](StateId id)
+{
+    return transitions_[id];
+}
+
 void NFA::EvaluateNextStateId()
 {
     ++next_state_id_;
