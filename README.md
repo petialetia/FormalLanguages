@@ -1,0 +1,1 @@
+This is Petr Liubar's repository for practical tasks of formal languages discipline.
