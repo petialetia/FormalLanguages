@@ -10,6 +10,7 @@
 #include <assert.h>
 
 using StateId = size_t;
+using TransitionsStorage = std::unordered_map<StateId, std::unordered_map<StateId, std::unordered_set<std::string>>>;
 
 const std::string EPSILON = "";
 
@@ -32,7 +33,7 @@ class NFA
 
     std::unordered_set<StateId> GetFinalStatesId() const;
 
-    const std::unordered_map<StateId, std::unordered_map<StateId, std::unordered_set<std::string>>>& GetTransitions() const;
+    const TransitionsStorage& GetTransitions() const;
 
   private:
     void EvaluateNextStateId();
@@ -42,7 +43,7 @@ class NFA
 
     std::unordered_set<StateId> states_id_;
 
-    std::unordered_map<StateId, std::unordered_map<StateId, std::unordered_set<std::string>>> transitions_;
+    TransitionsStorage transitions_;
 
     std::optional<StateId> start_state_ = std::nullopt;
 

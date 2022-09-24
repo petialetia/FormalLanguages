@@ -57,7 +57,7 @@ std::unordered_set<StateId> NFA::GetFinalStatesId() const
     return final_states;
 }
 
-const std::unordered_map<StateId, std::unordered_map<StateId, std::unordered_set<std::string>>>& NFA::GetTransitions() const
+const TransitionsStorage& NFA::GetTransitions() const
 {
     return transitions_;
 }
