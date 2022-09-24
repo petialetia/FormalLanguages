@@ -1,5 +1,5 @@
-#ifndef N_F_A_HPP
-#define N_F_A_HPP
+#ifndef NFA_HPP
+#define NFA_HPP
 
 #include <unordered_map>
 #include <unordered_set>
@@ -18,7 +18,7 @@ class NFA
   public:
     NFA() = default;
 
-    bool IsValid();
+    bool IsValid() const;
 
     StateId AddStartState(bool is_final = false);
 
@@ -26,16 +26,16 @@ class NFA
 
     void AddTransition(StateId start, StateId destination, std::string string);
 
-    std::unordered_set<StateId> GetFinalStatesId();
+    const std::unordered_set<StateId>& GetStatesId() const;
 
-    void SaveInDOA(std::string file_name = "./NFA.doa");
+    StateId GetStartStateId() const;
+
+    std::unordered_set<StateId> GetFinalStatesId() const;
+
+    const std::unordered_map<StateId, std::unordered_map<StateId, std::unordered_set<std::string>>>& GetTransitions() const;
 
   private:
     void EvaluateNextStateId();
-
-    void WriteAcceptance(std::ofstream& doa_file);
-
-    void WriteStates(std::ofstream& doa_file);
 
   private:
     StateId next_state_id_ = 0;
@@ -49,4 +49,4 @@ class NFA
     std::unordered_map<StateId, bool> is_state_final_;
 };
 
-#endif /* N_F_A_HPP */
+#endif /* NFA_HPP */

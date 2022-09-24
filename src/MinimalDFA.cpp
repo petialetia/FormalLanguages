@@ -18,7 +18,7 @@ int main()
 
     nfa.AddTransition(c, b, "aboba");
 
-    nfa.SaveInDOA();
+    SaveInDOA(nfa);
 
     return 0;
 }
