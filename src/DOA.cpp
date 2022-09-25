@@ -55,6 +55,9 @@ void WriteStates(const NFA& nfa, std::ofstream& doa_file)
     {
         doa_file << "State: " << state_id << "\n";
 
+        if (!nfa.GetTransitions().contains(state_id))
+            continue;
+
         for (const auto& [destination_id, strings] : nfa.GetTransitions().at(state_id))
         {
             for (const auto& string: strings)

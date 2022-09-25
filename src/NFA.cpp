@@ -1,5 +1,9 @@
 #include <NFA.hpp>
 
+Edge::Edge(StateId start, StateId destination) : start_(start), destination_(destination)
+{
+}
+
 bool Edge::operator==(const Edge& other) const
 {
     return start_ == other.start_ && destination_ == other.destination_;
@@ -10,6 +14,25 @@ std::size_t EdgeHash::operator() (const Edge& edge) const
     std::size_t seed = 0;
     boost::hash_combine(seed, edge.start_);
     boost::hash_combine(seed, edge.destination_);
+
+    return seed;   
+}
+
+Transition::Transition(Edge edge, std::string string) : edge_(edge), string_(string)
+{
+}
+
+bool Transition::operator==(const Transition& other) const
+{
+    return edge_ == other.edge_ && string_ == other.string_;
+}
+
+std::size_t TransitionHash::operator() (const Transition& transition) const
+{
+    std::size_t seed = 0;
+    boost::hash_combine(seed, transition.edge_.start_);
+    boost::hash_combine(seed, transition.edge_.destination_);
+    boost::hash_combine(seed, std::hash<decltype(transition.edge_.destination_)>()(transition.edge_.destination_));
 
     return seed;   
 }
@@ -107,6 +130,16 @@ void NFA::DeleteState(StateId state_id)
 const TransitionsStorage& NFA::GetTransitions() const
 {
     return transitions_;
+}
+
+void NFA::RemoveTransition(Transition transition)
+{
+    if (transitions_.contains(transition.edge_.start_) && 
+        transitions_[transition.edge_.start_].contains(transition.edge_.destination_) &&
+        transitions_[transition.edge_.start_][transition.edge_.destination_].contains(transition.string_))
+    {
+        transitions_[transition.edge_.start_][transition.edge_.destination_].erase(transition.string_);
+    }
 }
 
 std::unordered_map<StateId, std::unordered_set<std::string>>& NFA::operator[](StateId id)

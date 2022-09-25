@@ -4,5 +4,6 @@
 #include "NFA.hpp"
 #include "DOA.hpp"
 #include "EpsilonTransitionsRemoving.hpp"
+#include "SingleLetterTransitions.hpp"
 
 #endif /* MINIMAL_DFA_HPP */

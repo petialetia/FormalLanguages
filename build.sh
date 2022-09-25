@@ -2,7 +2,13 @@ TARGET="$1"
 
 mkdir -p build
 cd build
-cmake ..
+
+if [[($TARGET == "--debug")]]
+then
+    cmake -DCMAKE_BUILD_TYPE=Debug ..
+else
+    cmake ..
+fi
 
 if [[($TARGET == "--test")]]
 then

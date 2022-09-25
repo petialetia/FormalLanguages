@@ -20,7 +20,7 @@ int main()
 
     nfa.AddTransition({{a, c}, EPSILON});
 
-    RemoveEpsilonTransitions(nfa);
+    MakeTransitionsSingleLetter(nfa);
 
     SaveInDOA(nfa);
 

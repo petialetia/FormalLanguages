@@ -21,6 +21,8 @@ struct Edge
     StateId start_;
     StateId destination_;
 
+    Edge(StateId start, StateId destination);
+
     bool operator==(const Edge& other) const;
 };
 
@@ -33,6 +35,15 @@ struct Transition
 {
     Edge edge_;
     std::string string_;
+
+    Transition(Edge edge, std::string string);
+
+    bool operator==(const Transition& other) const;
+};
+
+struct TransitionHash
+{
+    std::size_t operator() (const Transition& edge) const;
 };
 
 class NFA
@@ -59,6 +70,8 @@ class NFA
     void DeleteState(StateId state_id);
 
     const TransitionsStorage& GetTransitions() const;
+
+    void RemoveTransition(Transition transition);
 
     std::unordered_map<StateId, std::unordered_set<std::string>>& operator[](StateId id);
 
