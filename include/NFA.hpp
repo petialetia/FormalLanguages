@@ -9,10 +9,31 @@
 
 #include <assert.h>
 
+#include <boost/functional/hash.hpp>
+
 using StateId = size_t;
 using TransitionsStorage = std::unordered_map<StateId, std::unordered_map<StateId, std::unordered_set<std::string>>>;
 
 const std::string EPSILON = "";
+
+struct Edge
+{
+    StateId start_;
+    StateId destination_;
+
+    bool operator==(const Edge& other) const;
+};
+
+struct EdgeHash
+{
+    std::size_t operator() (const Edge& edge) const;
+};
+
+struct Transition
+{
+    Edge edge_;
+    std::string string_;
+};
 
 class NFA
 {
@@ -25,7 +46,9 @@ class NFA
 
     StateId AddState(bool is_final = false);
 
-    void AddTransition(StateId start, StateId destination, std::string string);
+    void AddTransition(Transition transition);
+
+    bool IsTransition(const Transition& transition) const;
 
     const std::unordered_set<StateId>& GetStatesId() const;
 
@@ -33,9 +56,13 @@ class NFA
 
     std::unordered_set<StateId> GetFinalStatesId() const;
 
+    void DeleteState(StateId state_id);
+
     const TransitionsStorage& GetTransitions() const;
 
     std::unordered_map<StateId, std::unordered_set<std::string>>& operator[](StateId id);
+
+    void MakeStateFinal(StateId state);
 
   private:
     void EvaluateNextStateId();

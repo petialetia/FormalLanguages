@@ -10,13 +10,15 @@ int main()
 
     auto c = nfa.AddStartState();
 
-    nfa.AddTransition(a, b, "test");
+    nfa.AddTransition({{a, b}, "test"});
 
-    nfa.AddTransition(b, b, EPSILON);
+    nfa.AddTransition({{b, b}, EPSILON});
 
-    nfa.AddTransition(c, b, "aboba");
+    nfa.AddTransition({{c, b}, "aboba"});
 
-    nfa.AddTransition(b, a, EPSILON);
+    nfa.AddTransition({{b, a}, EPSILON});
+
+    nfa.AddTransition({{a, c}, EPSILON});
 
     RemoveEpsilonTransitions(nfa);
 

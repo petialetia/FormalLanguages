@@ -1,5 +1,19 @@
 #include <NFA.hpp>
 
+bool Edge::operator==(const Edge& other) const
+{
+    return start_ == other.start_ && destination_ == other.destination_;
+}
+
+std::size_t EdgeHash::operator() (const Edge& edge) const
+{
+    std::size_t seed = 0;
+    boost::hash_combine(seed, edge.start_);
+    boost::hash_combine(seed, edge.destination_);
+
+    return seed;   
+}
+
 bool NFA::IsValid() const
 {
     return start_state_.has_value();
@@ -25,9 +39,22 @@ StateId NFA::AddState(bool is_final)
     return new_state_id;
 }
 
-void NFA::AddTransition(StateId start, StateId destination, std::string string)
+void NFA::AddTransition(Transition transition)
 {
-    transitions_[start][destination].insert(string);
+    transitions_[transition.edge_.start_][transition.edge_.destination_].insert(transition.string_);
+}
+
+bool NFA::IsTransition(const Transition& transition) const
+{
+    if (!transitions_.contains(transition.edge_.start_))
+        return false;
+
+
+    if (!transitions_.at(transition.edge_.start_).contains(transition.edge_.destination_))
+        return false;
+
+
+    return transitions_.at(transition.edge_.start_).at(transition.edge_.destination_).contains(transition.string_);
 }
 
 const std::unordered_set<StateId>& NFA::GetStatesId() const
@@ -57,6 +84,26 @@ std::unordered_set<StateId> NFA::GetFinalStatesId() const
     return final_states;
 }
 
+void NFA::DeleteState(StateId state_id)
+{
+    transitions_.erase(state_id);
+
+    for (auto& [other_state_id, transitions_from_state] : transitions_)
+    {
+        transitions_from_state.erase(state_id);
+    }
+
+    states_id_.erase(state_id);
+
+    is_state_final_.erase(state_id);
+
+    if (start_state_.has_value())
+    {
+        if (start_state_.value() == state_id)
+            start_state_ = std::nullopt;
+    }
+}
+
 const TransitionsStorage& NFA::GetTransitions() const
 {
     return transitions_;
@@ -65,6 +112,11 @@ const TransitionsStorage& NFA::GetTransitions() const
 std::unordered_map<StateId, std::unordered_set<std::string>>& NFA::operator[](StateId id)
 {
     return transitions_[id];
+}
+
+void NFA::MakeStateFinal(StateId state)
+{
+    is_state_final_[state] = true;
 }
 
 void NFA::EvaluateNextStateId()
