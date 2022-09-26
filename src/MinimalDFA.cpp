@@ -2,7 +2,7 @@
 
 int main()
 {
-    auto nfa = NFA();
+    auto nfa = NFA({'a', 'b', 'o', 't', 'e', 's'});
 
     auto a = nfa.AddStartState(true);
 

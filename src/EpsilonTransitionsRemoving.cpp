@@ -165,7 +165,7 @@ void DeleteUnreachableStates(NFA& nfa)
         }
     }
 
-    std::unordered_set<StateId> states = nfa.GetStatesId();
+    std::set<StateId> states = nfa.GetStatesId();
 
     for (auto state : states)
     {

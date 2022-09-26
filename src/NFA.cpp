@@ -37,6 +37,10 @@ std::size_t TransitionHash::operator() (const Transition& transition) const
     return seed;   
 }
 
+NFA::NFA(Alphabet alphabet) : alphabet_(alphabet)
+{
+}
+
 bool NFA::IsValid() const
 {
     return start_state_.has_value();
@@ -64,6 +68,11 @@ StateId NFA::AddState(bool is_final)
 
 void NFA::AddTransition(Transition transition)
 {
+    for (const auto& symbol : transition.string_)
+    {
+        assert(alphabet_.contains(symbol));
+    }
+
     transitions_[transition.edge_.start_][transition.edge_.destination_].insert(transition.string_);
 }
 
@@ -80,7 +89,7 @@ bool NFA::IsTransition(const Transition& transition) const
     return transitions_.at(transition.edge_.start_).at(transition.edge_.destination_).contains(transition.string_);
 }
 
-const std::unordered_set<StateId>& NFA::GetStatesId() const
+const std::set<StateId>& NFA::GetStatesId() const
 {
     return states_id_;
 }
@@ -150,6 +159,11 @@ std::unordered_map<StateId, std::unordered_set<std::string>>& NFA::operator[](St
 void NFA::MakeStateFinal(StateId state)
 {
     is_state_final_[state] = true;
+}
+
+const Alphabet& NFA::GetAlphabet()
+{
+    return alphabet_;
 }
 
 void NFA::EvaluateNextStateId()

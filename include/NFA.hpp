@@ -46,10 +46,14 @@ struct TransitionHash
     std::size_t operator() (const Transition& edge) const;
 };
 
+using Alphabet = std::set<char>;
+
 class NFA
 {
   public:
-    NFA() = default;
+    NFA() = delete;
+
+    NFA(Alphabet alphabet);
 
     bool IsValid() const;
 
@@ -61,7 +65,7 @@ class NFA
 
     bool IsTransition(const Transition& transition) const;
 
-    const std::unordered_set<StateId>& GetStatesId() const;
+    const std::set<StateId>& GetStatesId() const;
 
     StateId GetStartStateId() const;
 
@@ -77,19 +81,23 @@ class NFA
 
     void MakeStateFinal(StateId state);
 
+    const Alphabet& GetAlphabet();
+
   private:
     void EvaluateNextStateId();
 
   private:
     StateId next_state_id_ = 0;
 
-    std::unordered_set<StateId> states_id_;
+    std::set<StateId> states_id_;
 
     TransitionsStorage transitions_;
 
     std::optional<StateId> start_state_ = std::nullopt;
 
     std::unordered_map<StateId, bool> is_state_final_;
+
+    const Alphabet alphabet_;
 };
 
 #endif /* NFA_HPP */

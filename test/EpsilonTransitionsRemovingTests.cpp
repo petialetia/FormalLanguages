@@ -2,9 +2,11 @@
 
 #include <EpsilonTransitionsRemoving.hpp>
 
+#include <initializer_list>
+
 TEST(GetEpsilonTransitions, Correctness)
 {
-    NFA nfa;
+    NFA nfa(std::initializer_list<char>{});
 
     auto start_state_id = nfa.AddStartState();
     auto second_state_id = nfa.AddState();
@@ -25,7 +27,7 @@ TEST(GetEpsilonTransitions, Correctness)
 
 TEST(MakeEpsilonTransitiveClosure, Correctness1)
 {
-    NFA nfa;
+    NFA nfa(std::initializer_list<char>{});
 
     auto start_state_id = nfa.AddStartState();
     auto second_state_id = nfa.AddState();
@@ -65,7 +67,7 @@ TEST(MakeEpsilonTransitiveClosure, Correctness1)
 
 TEST(MakeEpsilonTransitiveClosure, Correctness2)
 {
-    NFA nfa;
+    NFA nfa(std::initializer_list<char>{});
 
     auto start_state_id = nfa.AddStartState();
     auto second_state_id = nfa.AddState();
@@ -92,7 +94,7 @@ TEST(MakeEpsilonTransitiveClosure, Correctness2)
 
 TEST(AddFinalStates, Correctness1)
 {
-    NFA nfa;
+    NFA nfa(std::initializer_list<char>{});
 
     auto start_state_id = nfa.AddStartState();
     auto second_state_id = nfa.AddState();
@@ -113,7 +115,7 @@ TEST(AddFinalStates, Correctness1)
 
 TEST(AddFinalStates, Correctness2)
 {
-    NFA nfa;
+    NFA nfa(std::initializer_list<char>{});
 
     auto start_state_id = nfa.AddStartState(true);
     auto second_state_id = nfa.AddState();
@@ -134,7 +136,7 @@ TEST(AddFinalStates, Correctness2)
 
 TEST(AddTransitions, Correctness1)
 {
-    NFA nfa;
+    NFA nfa({'a', 'b', 'c'});
 
     auto start_state_id = nfa.AddStartState();
     auto second_state_id = nfa.AddState();
@@ -159,7 +161,7 @@ TEST(AddTransitions, Correctness1)
 
 TEST(AddTransitions, Correctness2)
 {
-    NFA nfa;
+    NFA nfa({'a', 'b', 'c'});
 
     auto start_state_id = nfa.AddStartState();
     auto second_state_id = nfa.AddState();
@@ -183,7 +185,7 @@ TEST(AddTransitions, Correctness2)
 
 TEST(DeleteEpsilonTransitions, Correctness)
 {
-    NFA nfa;
+    NFA nfa({'a', 'b', 'c'});
 
     auto start_state_id = nfa.AddStartState();
     auto second_state_id = nfa.AddState();
@@ -204,7 +206,7 @@ TEST(DeleteEpsilonTransitions, Correctness)
 
 TEST(DeleteUnreachableStates, Correctness)
 {
-    NFA nfa;
+    NFA nfa({'a', 'b', 'c', 'd'});
 
     auto start_state_id = nfa.AddStartState();
     auto second_state_id = nfa.AddState();
@@ -229,7 +231,7 @@ TEST(DeleteUnreachableStates, Correctness)
 
 TEST(RemoveEpsilonTransitions, Correctness1)
 {
-    NFA nfa;
+    NFA nfa(std::initializer_list<char>{});
 
     auto start_state_id = nfa.AddStartState();
     auto second_state_id = nfa.AddState();
@@ -260,7 +262,7 @@ TEST(RemoveEpsilonTransitions, Correctness1)
 
 TEST(RemoveEpsilonTransitions, Correctness2)
 {
-    NFA nfa;
+    NFA nfa({'a', 'b'});
 
     auto start_state_id = nfa.AddStartState();
     auto second_state_id = nfa.AddState(true);

@@ -6,7 +6,7 @@
 
 TEST(MakeTransitionsSingleLetter, Correctness1)
 {
-    NFA nfa;
+    NFA nfa({'a', 'b', 'c', 'd'});
 
     auto start_state_id = nfa.AddStartState();
     auto second_state_id = nfa.AddState(true);
