@@ -2,25 +2,19 @@
 
 int main()
 {
-    auto nfa = NFA({'a', 'b', 'o', 't', 'e', 's'});
+    auto nfa = NFA({'a', 'b'});
 
-    auto a = nfa.AddStartState(true);
+    auto start = nfa.AddStartState();
 
-    auto b = nfa.AddStartState(true);
+    auto second = nfa.AddState(true);
 
-    auto c = nfa.AddStartState();
+    auto third = nfa.AddState(true);
 
-    nfa.AddTransition({{a, b}, "test"});
+    nfa.AddTransition({{start, second}, "a"});
 
-    nfa.AddTransition({{b, b}, EPSILON});
+    nfa.AddTransition({{start, third}, "b"});
 
-    nfa.AddTransition({{c, b}, "aboba"});
-
-    nfa.AddTransition({{b, a}, EPSILON});
-
-    nfa.AddTransition({{a, c}, EPSILON});
-
-    MakeTransitionsSingleLetter(nfa);
+    ChangeToDFA(nfa);
 
     SaveInDOA(nfa);
 

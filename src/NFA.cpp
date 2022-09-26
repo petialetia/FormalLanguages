@@ -22,6 +22,10 @@ Transition::Transition(Edge edge, std::string string) : edge_(edge), string_(str
 {
 }
 
+Transition::Transition(Edge edge, char symbol) : edge_(edge), string_(1, symbol)
+{
+}
+
 bool Transition::operator==(const Transition& other) const
 {
     return edge_ == other.edge_ && string_ == other.string_;

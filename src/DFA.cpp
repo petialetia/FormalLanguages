@@ -13,17 +13,20 @@ void ChangeToDFA(NFA& nfa)
     }
 
     auto final_states = nfa.GetFinalStatesId();
-    std::unordered_map<StateId, std::unordered_map<char, std::set<StateId>>> transition_table;
-    std::unordered_map<StateId, std::set<StateId>> new_states_info;
-    std::unordered_set<std::unordered_set<StateId>, boost::hash<std::unordered_set<StateId>>> new_states_combinations;
+    std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>>> transition_table;
+    std::unordered_map<StateId, std::unordered_set<StateId>> new_states_info;
+    std::unordered_map<std::unordered_set<StateId>, StateId, boost::hash<std::unordered_set<StateId>>> new_info;
+    //std::unordered_set<std::unordered_set<StateId>, boost::hash<std::unordered_set<StateId>>> new_states_combinations;
 
     for (const auto& state_id : nfa.GetStatesId())
     {
         if (state_id == sink_id)
             continue;
 
+        if (new_states_info.contains(state_id))
+            continue;
         
-        for (const auto& [other_state_id, strings] : transitions_[state_id])
+        for (const auto& [other_state_id, strings] : nfa.GetTransitions().at(state_id))
         {
             for (const auto& string: strings)
             {
@@ -42,26 +45,40 @@ void ChangeToDFA(NFA& nfa)
 
             if (destinations.size() > 1)
             {
-                StateId new_state_id = 0;
-
-                for(const auto& destination : destinations)
+                if (!new_info.contains(destinations))
                 {
-                    if (final_states.contains(destination))
+                    StateId new_state_id = 0;
+
+                    for(const auto& destination : destinations)
                     {
-                        auto new_state_id = nfa.AddState(true);
-                        final_states.insert(new_state_id);
-                        goto NEW_STATE_IS_ADDED;
+                        if (final_states.contains(destination))
+                        {
+                            auto new_state_id = nfa.AddState(true);
+                            final_states.insert(new_state_id);
+                            goto NEW_STATE_IS_ADDED; //in python it would be for-else construction
+                        }
                     }
-                }
+
+                    new_state_id = nfa.AddState(false);
+
+                NEW_STATE_IS_ADDED:
                 
-                new_state_id = nfa.AddState(false);
+                    new_states_info[new_state_id] = destinations;
+                    new_info[destinations] = new_state_id;
+                    //new_states_combinations.insert(destinations);
+                }
 
-            NEW_STATE_IS_ADDED:
+                auto destination_state_id = new_info[destinations];
 
-                new_states_info[new_state_id] = destinations;
+                nfa.AddTransition({{state_id, destination_state_id}, symbol});
 
-                nfa.AddTransition({{state_id, new_state_id}, symbol});
+                for (const auto& destination: destinations)
+                {
+                    nfa.RemoveTransition({{state_id, destination}, symbol});
+                }
             }
         }
     }
+
+
 }

@@ -37,6 +37,7 @@ struct Transition
     std::string string_;
 
     Transition(Edge edge, std::string string);
+    Transition(Edge edge, char symbol);
 
     bool operator==(const Transition& other) const;
 };
