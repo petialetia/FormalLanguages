@@ -25,4 +25,15 @@ struct UnorderedSetHash
 
 void ChangeToDFA(NFA& nfa);
 
+std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>>> ProcessNormalStates(NFA& nfa, std::unordered_map<StateId, std::unordered_set<StateId>>& new_states_info,
+                                                                                                       std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>>& new_destinations_info,
+                                                                                                       std::unordered_set<StateId>& final_states, StateId sink_id);
+
+StateId AddCompositState(NFA& nfa, const std::unordered_set<StateId>& states, const std::unordered_set<StateId>& final_states);
+
+void ProcessCompositStates(NFA& nfa, std::unordered_map<StateId, std::unordered_set<StateId>>& new_states_info,
+                           std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>>& new_destinations_info,
+                           std::unordered_set<StateId>& final_states, StateId sink_id,
+                           std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>>>& transitions_table);
+
 #endif /* DFA_HPP */
