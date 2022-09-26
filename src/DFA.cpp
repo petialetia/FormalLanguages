@@ -1,5 +1,7 @@
 #include <DFA.hpp>
 
+#include <iostream>
+
 void ChangeToDFA(NFA& nfa)
 {
     RemoveEpsilonTransitions(nfa);
@@ -13,10 +15,9 @@ void ChangeToDFA(NFA& nfa)
     }
 
     auto final_states = nfa.GetFinalStatesId();
-    std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>>> transition_table;
+    std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>>> transitions_table;
     std::unordered_map<StateId, std::unordered_set<StateId>> new_states_info;
-    std::unordered_map<std::unordered_set<StateId>, StateId, boost::hash<std::unordered_set<StateId>>> new_info;
-    //std::unordered_set<std::unordered_set<StateId>, boost::hash<std::unordered_set<StateId>>> new_states_combinations;
+    std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>> new_destinations_info;
 
     for (const auto& state_id : nfa.GetStatesId())
     {
@@ -30,22 +31,23 @@ void ChangeToDFA(NFA& nfa)
         {
             for (const auto& string: strings)
             {
-                transition_table[state_id][string[0]].insert(other_state_id);
+                transitions_table[state_id][string[0]].insert(other_state_id);
             }
         }
 
-        for (const auto& [symbol, destinations] : transition_table[state_id])
+        for (const auto& symbol : nfa.GetAlphabet())
         {
+            const auto& destinations = transitions_table[state_id][symbol];
+
             if (destinations.size() == 0)
             {
                 nfa.AddTransition({{state_id, sink_id}, symbol});
                 continue;
             }
 
-
             if (destinations.size() > 1)
             {
-                if (!new_info.contains(destinations))
+                if (!new_destinations_info.contains(destinations))
                 {
                     StateId new_state_id = 0;
 
@@ -64,11 +66,10 @@ void ChangeToDFA(NFA& nfa)
                 NEW_STATE_IS_ADDED:
                 
                     new_states_info[new_state_id] = destinations;
-                    new_info[destinations] = new_state_id;
-                    //new_states_combinations.insert(destinations);
+                    new_destinations_info[destinations] = new_state_id;
                 }
 
-                auto destination_state_id = new_info[destinations];
+                auto destination_state_id = new_destinations_info[destinations];
 
                 nfa.AddTransition({{state_id, destination_state_id}, symbol});
 
@@ -80,5 +81,5 @@ void ChangeToDFA(NFA& nfa)
         }
     }
 
-
+    DeleteUnreachableStates(nfa);
 }
