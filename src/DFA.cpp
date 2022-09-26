@@ -1,7 +1,5 @@
 #include <DFA.hpp>
 
-#include <iostream>
-
 void ChangeToDFA(NFA& nfa)
 {
     RemoveEpsilonTransitions(nfa);
@@ -19,29 +17,29 @@ void ChangeToDFA(NFA& nfa)
     std::unordered_map<StateId, std::unordered_set<StateId>> new_states_info;
     std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>> new_destinations_info;
 
-    for (const auto& state_id : nfa.GetStatesId())
+    for (const auto& current_state_id : nfa.GetStatesId())
     {
-        if (state_id == sink_id)
+        if (current_state_id == sink_id)
             continue;
 
-        if (new_states_info.contains(state_id))
+        if (new_states_info.contains(current_state_id))
             continue;
-        
-        for (const auto& [other_state_id, strings] : nfa.GetTransitions().at(state_id))
+
+        for (const auto& [other_state_id, strings] : nfa.GetTransitions().at(current_state_id))
         {
             for (const auto& string: strings)
             {
-                transitions_table[state_id][string[0]].insert(other_state_id);
+                transitions_table[current_state_id][string[0]].insert(other_state_id);
             }
         }
 
         for (const auto& symbol : nfa.GetAlphabet())
         {
-            const auto& destinations = transitions_table[state_id][symbol];
+            const auto& destinations = transitions_table[current_state_id][symbol];
 
             if (destinations.size() == 0)
             {
-                nfa.AddTransition({{state_id, sink_id}, symbol});
+                nfa.AddTransition({{current_state_id, sink_id}, symbol});
                 continue;
             }
 
@@ -55,7 +53,7 @@ void ChangeToDFA(NFA& nfa)
                     {
                         if (final_states.contains(destination))
                         {
-                            auto new_state_id = nfa.AddState(true);
+                            new_state_id = nfa.AddState(true);
                             final_states.insert(new_state_id);
                             goto NEW_STATE_IS_ADDED; //in python it would be for-else construction
                         }
@@ -71,11 +69,11 @@ void ChangeToDFA(NFA& nfa)
 
                 auto destination_state_id = new_destinations_info[destinations];
 
-                nfa.AddTransition({{state_id, destination_state_id}, symbol});
+                nfa.AddTransition({{current_state_id, destination_state_id}, symbol});
 
                 for (const auto& destination: destinations)
                 {
-                    nfa.RemoveTransition({{state_id, destination}, symbol});
+                    nfa.RemoveTransition({{current_state_id, destination}, symbol});
                 }
             }
         }

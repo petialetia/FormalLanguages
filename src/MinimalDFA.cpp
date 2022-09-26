@@ -6,13 +6,15 @@ int main()
 
     auto start = nfa.AddStartState();
 
-    auto second = nfa.AddState(true);
+    auto second = nfa.AddState();
 
     auto third = nfa.AddState(true);
 
     nfa.AddTransition({{start, second}, "a"});
 
-    nfa.AddTransition({{start, third}, "b"});
+    nfa.AddTransition({{start, third}, "a"});
+
+    nfa.AddTransition({{second, third}, "b"});
 
     ChangeToDFA(nfa);
 

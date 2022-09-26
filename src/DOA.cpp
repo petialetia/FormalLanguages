@@ -20,7 +20,7 @@ void SaveInDOA(const NFA& nfa, std::string file_name)
 
     WriteStates(nfa, doa_file);
 
-    doa_file << "--END--";
+    doa_file << "--END--\n";
 
     doa_file.close();
 }
