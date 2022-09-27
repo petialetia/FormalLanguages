@@ -7,4 +7,29 @@
 #include "SingleLetterTransitions.hpp"
 #include "DFA.hpp"
 
+using ClassId = size_t;
+
+using StateClassInfos = std::unordered_map<StateId, ClassId>;
+
+struct StateAndNeighboursClasses
+{
+    ClassId class_id_;
+    std::vector<ClassId> neighbours_classes_;
+
+    bool operator==(const StateAndNeighboursClasses& other) const;
+};
+
+struct StateAndNeighboursClassesHash
+{
+    std::size_t operator() (const StateAndNeighboursClasses& classes) const;
+};
+
+size_t GetNumOfClasses(const StateClassInfos& class_infos);
+
+void ChangeToMinimalDFA(NFA& nfa);
+
+StateClassInfos GetStartClasses(const NFA& nfa);
+
+StateClassInfos GetNextStageClasses(const NFA& nfa, const StateClassInfos& current_stage_classes);
+
 #endif /* MINIMAL_DFA_HPP */

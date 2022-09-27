@@ -105,6 +105,18 @@ StateId NFA::GetStartStateId() const
     return start_state_.value();
 }
 
+bool NFA::IsState(StateId state_id) const
+{
+    return states_id_.contains(state_id);
+}
+
+bool NFA::IsStateFinal(StateId state_id) const
+{
+    assert(IsState(state_id));
+
+    return is_state_final_.at(state_id);
+}
+
 std::unordered_set<StateId> NFA::GetFinalStatesId() const
 {
     std::unordered_set<StateId> final_states;
@@ -165,7 +177,7 @@ void NFA::MakeStateFinal(StateId state)
     is_state_final_[state] = true;
 }
 
-const Alphabet& NFA::GetAlphabet()
+const Alphabet& NFA::GetAlphabet() const
 {
     return alphabet_;
 }
@@ -175,4 +187,27 @@ void NFA::EvaluateNextStateId()
     ++next_state_id_;
 
     assert(next_state_id_ != 0); //Overflow catching
+}
+
+std::unordered_set<StateId> GetDestinationsByString(const NFA& nfa, StateId start, std::string string)
+{
+    assert(nfa.IsState(start));
+
+    std::unordered_set<StateId> destinations_by_string;
+
+    for (const auto& [destination, transition_strings] : nfa.GetTransitions().at(start))
+    {
+        for (const auto& transition_string : transition_strings)
+        {
+            if (transition_string == string)
+                destinations_by_string.insert(destination);
+        }
+    }
+
+    return destinations_by_string;
+}
+
+std::unordered_set<StateId> GetDestinationsByString(const NFA& nfa, StateId start, char letter)
+{
+    return GetDestinationsByString(nfa, start, std::string(1, letter));
 }

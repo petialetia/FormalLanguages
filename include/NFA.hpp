@@ -70,6 +70,10 @@ class NFA
 
     StateId GetStartStateId() const;
 
+    bool IsState(StateId state_id) const;
+
+    bool IsStateFinal(StateId state_id) const;
+
     std::unordered_set<StateId> GetFinalStatesId() const;
 
     void DeleteState(StateId state_id);
@@ -82,7 +86,7 @@ class NFA
 
     void MakeStateFinal(StateId state);
 
-    const Alphabet& GetAlphabet();
+    const Alphabet& GetAlphabet() const;
 
   private:
     void EvaluateNextStateId();
@@ -100,5 +104,9 @@ class NFA
 
     const Alphabet alphabet_;
 };
+
+std::unordered_set<StateId> GetDestinationsByString(const NFA& nfa, StateId start, std::string string);
+
+std::unordered_set<StateId> GetDestinationsByString(const NFA& nfa, StateId start, char letter);
 
 #endif /* NFA_HPP */
