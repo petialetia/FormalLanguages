@@ -29,7 +29,9 @@ std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>
                                                                                                        std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>>& new_destinations_info,
                                                                                                        std::unordered_set<StateId>& final_states, StateId sink_id);
 
-StateId AddCompositState(NFA& nfa, const std::unordered_set<StateId>& states, const std::unordered_set<StateId>& final_states);
+StateId AddCompositState(NFA& nfa, const std::unordered_set<StateId>& states, const std::unordered_set<StateId>& final_states,
+                         std::unordered_map<StateId, std::unordered_set<StateId>>& composit_states_info,
+                         std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>>& composit_destinations_info);
 
 void ProcessCompositStates(NFA& nfa, std::unordered_map<StateId, std::unordered_set<StateId>>& new_states_info,
                            std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>>& new_destinations_info,

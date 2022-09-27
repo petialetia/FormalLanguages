@@ -47,7 +47,7 @@ struct TransitionHash
     std::size_t operator() (const Transition& edge) const;
 };
 
-using Alphabet = std::set<char>;
+using Alphabet = std::unordered_set<char>;
 
 class NFA
 {
