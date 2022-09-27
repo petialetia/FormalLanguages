@@ -10,11 +10,21 @@ int main()
 
     auto third = nfa.AddState(true);
 
+    auto fouth = nfa.AddState();
+
+    auto fifth = nfa.AddState();
+
     nfa.AddTransition({{start, second}, "a"});
 
     nfa.AddTransition({{start, third}, "a"});
 
     nfa.AddTransition({{second, third}, "b"});
+
+    nfa.AddTransition({{start, fouth}, "a"});
+
+    nfa.AddTransition({{fouth, fifth}, "b"});
+
+    nfa.AddTransition({{fifth, third}, "b"});
 
     ChangeToDFA(nfa);
 

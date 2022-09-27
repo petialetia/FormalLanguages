@@ -137,7 +137,7 @@ void ProcessCompositStates(NFA& nfa, std::unordered_map<StateId, std::unordered_
             }
 
 
-            if (destinations_by_symbol.size() > 2)
+            if (destinations_by_symbol.size() >= 2)
             {
                 if (new_destinations_info.contains(destinations_by_symbol))
                 {
@@ -148,6 +148,9 @@ void ProcessCompositStates(NFA& nfa, std::unordered_map<StateId, std::unordered_
                     auto new_state_id = AddCompositState(nfa, destinations_by_symbol, final_states);
                     queue_for_procession.push_back(new_state_id);
                     
+                    new_states_info[new_state_id] = destinations_by_symbol;
+                    new_destinations_info[destinations_by_symbol] = new_state_id;
+
                     nfa.AddTransition({{current_composit_state, new_state_id}, symbol});
                 }
             }
