@@ -2,29 +2,29 @@
 
 int main()
 {
-    auto nfa = NFA({'a', 'b'});
+    auto nfa = NFA({'a', 'b', 'c'});
 
     auto start = nfa.AddStartState();
-
+    auto first = nfa.AddState();
     auto second = nfa.AddState();
-
-    auto third = nfa.AddState(true);
-
-    auto fouth = nfa.AddState();
-
+    auto third = nfa.AddState();
+    auto fouth = nfa.AddState(true);
     auto fifth = nfa.AddState();
+    auto sixth = nfa.AddState(true);
 
-    nfa.AddTransition({{start, second}, "a"});
-
-    nfa.AddTransition({{start, third}, "a"});
-
-    nfa.AddTransition({{second, third}, "b"});
-
-    nfa.AddTransition({{start, fouth}, "a"});
-
-    nfa.AddTransition({{fouth, fifth}, "b"});
-
-    nfa.AddTransition({{fifth, third}, "b"});
+    nfa.AddTransition({{start, first}, "a"});
+    nfa.AddTransition({{start, fifth}, "a"});
+    nfa.AddTransition({{start, second}, "b"});
+    nfa.AddTransition({{start, third}, "b"});
+    nfa.AddTransition({{third, second}, "c"});
+    nfa.AddTransition({{fifth, second}, "b"});
+    nfa.AddTransition({{second, fifth}, "a"});
+    nfa.AddTransition({{first, third}, "b"});
+    nfa.AddTransition({{third, first}, "a"});
+    nfa.AddTransition({{first, fouth}, "c"});
+    nfa.AddTransition({{fifth, sixth}, "c"});
+    nfa.AddTransition({{second, sixth}, "c"});
+    nfa.AddTransition({{third, fouth}, "c"});
 
     ChangeToDFA(nfa);
 

@@ -45,7 +45,7 @@ TEST(ChangeToDFA, AlreadyDFA2)
     EXPECT_EQ(nfa[new_start_state][new_start_state].size(), 0);
 }
 
-TEST(ChangeToDFA, Complicated)
+TEST(ChangeToDFA, Complicated1)
 {
     auto nfa = NFA({'a', 'b'});
 
@@ -61,6 +61,37 @@ TEST(ChangeToDFA, Complicated)
     nfa.AddTransition({{start, fouth}, "a"});
     nfa.AddTransition({{fouth, fifth}, "b"});
     nfa.AddTransition({{fifth, third}, "b"});
+
+    ChangeToDFA(nfa);
+
+    EXPECT_TRUE(nfa.IsValid());
+}
+
+TEST(ChangeToDFA, Complicated2)
+{
+    auto nfa = NFA({'a', 'b', 'c'});
+
+    auto start = nfa.AddStartState();
+    auto first = nfa.AddState();
+    auto second = nfa.AddState();
+    auto third = nfa.AddState();
+    auto fouth = nfa.AddState(true);
+    auto fifth = nfa.AddState();
+    auto sixth = nfa.AddState(true);
+
+    nfa.AddTransition({{start, first}, "a"});
+    nfa.AddTransition({{start, fifth}, "a"});
+    nfa.AddTransition({{start, second}, "b"});
+    nfa.AddTransition({{start, third}, "b"});
+    nfa.AddTransition({{third, second}, "c"});
+    nfa.AddTransition({{fifth, second}, "b"});
+    nfa.AddTransition({{second, fifth}, "a"});
+    nfa.AddTransition({{first, third}, "b"});
+    nfa.AddTransition({{third, first}, "a"});
+    nfa.AddTransition({{first, fouth}, "c"});
+    nfa.AddTransition({{fifth, sixth}, "c"});
+    nfa.AddTransition({{second, sixth}, "c"});
+    nfa.AddTransition({{third, fouth}, "c"});
 
     ChangeToDFA(nfa);
 
