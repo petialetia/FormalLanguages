@@ -32,4 +32,6 @@ StateClassInfos GetStartClasses(const NFA& nfa);
 
 StateClassInfos GetNextStageClasses(const NFA& nfa, const StateClassInfos& current_stage_classes);
 
+void MergeStates(NFA& nfa, StateId base_state, StateId state_to_attach);
+
 #endif /* MINIMAL_DFA_HPP */
