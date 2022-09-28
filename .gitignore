@@ -5,3 +5,6 @@ lib
 .vscode
 
 *.doa
+*.pal
+
+!Example.pal

@@ -1,5 +1,6 @@
 add_library(NFA STATIC NFA.cpp)
 add_library(DOA STATIC DOA.cpp)
+add_library(PAL STATIC PAL.cpp)
 add_library(EpsilonTransitionsRemoving STATIC EpsilonTransitionsRemoving.cpp)
 add_library(SingleLetterTransitions STATIC SingleLetterTransitions.cpp)
 
@@ -10,4 +11,4 @@ add_library(MinimalDFA MinimalDFA.cpp)
 target_link_libraries(MinimalDFA NFA DFA)
 
 add_executable(Main Main.cpp)
-target_link_libraries(Main DOA MinimalDFA)
+target_link_libraries(Main DOA MinimalDFA PAL)
