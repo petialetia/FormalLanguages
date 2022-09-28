@@ -60,7 +60,7 @@ NFA ReadNFA(std::string file_name)
         auto tokens = Split(*transitions_string_iterator, " ");
 
         nfa.AddTransition({{state_identifiers.at(tokens[0]), state_identifiers.at(tokens[1])}, 
-                           tokens[2]});
+                           tokens[2] != "EPSILON" ? tokens[2] : ""});
     }
 
     return nfa;
