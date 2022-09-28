@@ -6,5 +6,5 @@ if [[($TARGET == "--test")]]
 then 
     ./bin/Tests.out
 else
-    ./bin/MinimalDFA.out
+    ./bin/Main.out
 fi
