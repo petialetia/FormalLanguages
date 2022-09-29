@@ -5,6 +5,9 @@ TARGET="$1"
 if [[($TARGET == "--test")]]
 then 
     ./bin/Tests.out
+elif [[($TARGET == "--coverage")]]
+then
+    xdg-open build/ccov/Tests/index.html
 else
-    ./bin/Main.out
+    ./bin/MolecularBox.out
 fi
