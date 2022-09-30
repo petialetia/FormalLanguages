@@ -2,9 +2,8 @@
 #define PAL_HPP
 
 #include <NFA.hpp>
-
-#include <fstream>
 #include <boost/algorithm/string.hpp>
+#include <fstream>
 
 NFA ReadNFA(std::string file_name);
 

@@ -8,7 +8,8 @@ void DeleteEpsilonOneStepCycles(NFA& nfa);
 
 void EpsilonTransitiveClosureNFA(NFA& nfa);
 std::unordered_set<Edge, EdgeHash> GetEpsilonTransitions(const NFA& nfa);
-void MakeEpsilonTransitiveClosure(NFA& nfa, std::unordered_set<Edge, EdgeHash> epsilon_transitions);
+void MakeEpsilonTransitiveClosure(
+    NFA& nfa, std::unordered_set<Edge, EdgeHash> epsilon_transitions);
 
 void AddFinalStates(NFA& nfa);
 void AddTransitions(NFA& nfa);

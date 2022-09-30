@@ -1,17 +1,16 @@
 #include <DOA.hpp>
-#include <PAL.hpp>
-#include <NFA.hpp>
 #include <MinimalCDFA.hpp>
+#include <NFA.hpp>
+#include <PAL.hpp>
 
-int main()
-{
-    auto nfa = ReadNFA("Example.pal");
+int main() {
+  auto nfa = ReadNFA("Example.pal");
 
-    SaveInDOA(nfa, "Start.doa");
+  SaveInDOA(nfa, "Start.doa");
 
-    ChangeToMinimalCDFA(nfa);
+  ChangeToMinimalCDFA(nfa);
 
-    SaveInDOA(nfa, "Changed.doa");
+  SaveInDOA(nfa, "Changed.doa");
 
-    return 0;
+  return 0;
 }
