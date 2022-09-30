@@ -1,5 +1,4 @@
 #include <SingleLetterTransitions.hpp>
-#include <iostream>
 
 void MakeTransitionsSingleLetter(NFA& nfa) {
   std::unordered_set<Transition, TransitionHash> transitions_to_add;

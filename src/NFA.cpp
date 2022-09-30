@@ -143,6 +143,8 @@ std::unordered_map<StateId, std::unordered_set<std::string>>& NFA::operator[](
   return transitions_[id];
 }
 
+void NFA::MakeStateStart(StateId state) { start_state_ = state; }
+
 void NFA::MakeStateFinal(StateId state) { is_state_final_[state] = true; }
 
 const Alphabet& NFA::GetAlphabet() const { return alphabet_; }

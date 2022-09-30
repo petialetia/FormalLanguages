@@ -21,6 +21,28 @@ TEST(Transition, Comparing) {
   EXPECT_FALSE(third_transition == fouth_transition);
 }
 
+TEST(NFA, IsTransition) {
+  NFA nfa({'a', 'b'});
+
+  auto start_state_id = nfa.AddStartState();
+  auto first_state_id = nfa.AddState();
+  auto second_state_id = nfa.AddState();
+
+  nfa.AddTransition({{start_state_id, first_state_id}, "a"});
+  nfa.AddTransition({{first_state_id, start_state_id}, "ab"});
+
+  EXPECT_TRUE(nfa.IsValid());
+  EXPECT_TRUE(nfa.IsTransition({{start_state_id, first_state_id}, "a"}));
+  EXPECT_TRUE(nfa.IsTransition({{first_state_id, start_state_id}, "ab"}));
+
+  EXPECT_FALSE(nfa.IsTransition({{start_state_id, first_state_id}, "b"}));
+  EXPECT_FALSE(nfa.IsTransition({{start_state_id, first_state_id}, "ab"}));
+  EXPECT_FALSE(nfa.IsTransition({{first_state_id, second_state_id}, "a"}));
+  EXPECT_FALSE(nfa.IsTransition({{first_state_id, second_state_id}, "b"}));
+  EXPECT_FALSE(nfa.IsTransition({{second_state_id, first_state_id}, "a"}));
+  EXPECT_FALSE(nfa.IsTransition({{second_state_id, start_state_id}, "a"}));
+}
+
 TEST(NFA, StateDeletion) {
   NFA nfa({'a', 'b'});
 
@@ -48,4 +70,16 @@ TEST(NFA, StateDeletion) {
           0);
     }
   }
+}
+
+TEST(NFA, MakeStateFinal) {
+  NFA nfa({'a', 'b'});
+
+  nfa.AddStartState(true);
+  auto second_state_id = nfa.AddState(true);
+
+  nfa.MakeStateStart(second_state_id);
+
+  EXPECT_TRUE(nfa.IsValid());
+  EXPECT_EQ(nfa.GetStartStateId(), second_state_id);
 }

@@ -80,6 +80,8 @@ class NFA {
   std::unordered_map<StateId, std::unordered_set<std::string>>& operator[](
       StateId id);
 
+  void MakeStateStart(StateId state);
+
   void MakeStateFinal(StateId state);
 
   const Alphabet& GetAlphabet() const;

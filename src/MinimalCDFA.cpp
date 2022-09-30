@@ -105,6 +105,10 @@ StateClassInfos GetNextStageClasses(
 }
 
 void MergeStates(NFA& nfa, StateId base_state, StateId state_to_attach) {
+  if (nfa.IsStateFinal(state_to_attach)) {
+    nfa.MakeStateStart(base_state);
+  }
+
   for (const auto& [state, transitions_from_state] : nfa.GetTransitions()) {
     if (state == state_to_attach) continue;
 
