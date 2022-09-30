@@ -61,7 +61,7 @@ START_OVER:
                 Edge new_transition_edge = {(*first_edge_iterator).start_, (*second_edge_iterator).destination_};
                 nfa.AddTransition({new_transition_edge, EPSILON});
                 epsilon_transitions.insert(new_transition_edge);
-                goto START_OVER; //We have new transition, plus iterators invalidated, 
+                goto START_OVER; //Iterators invalidated, plus we have new epsilon transition, 
                                  //so we need to start from the begining
             }
         }
@@ -114,8 +114,8 @@ START_OVER:
                 {
                     nfa.AddTransition(new_transition);
                     is_start_over_needed = true; //we added new transition, 
-                                                 //that means we could add another transition,
-                                                 //but we could process needed epsilon edge already
+                                                 //that means we could add another transition from different state,
+                                                 //but we could process needed epsilon edge and state already
 
                 }
             }

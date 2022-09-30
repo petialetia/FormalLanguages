@@ -76,7 +76,7 @@ StateClassInfos GetStartClasses(const NFA& nfa)
 
 StateClassInfos GetNextStageClasses(const NFA& nfa, const StateClassInfos& current_stage_classes)
 {
-    std::unordered_map<StateId, std::vector<ClassId>> transition_table;
+    std::unordered_map<StateId, std::vector<ClassId>> class_to_class_transition_table;
 
     for (const auto& state : nfa.GetStatesId())
     {
@@ -85,7 +85,7 @@ StateClassInfos GetNextStageClasses(const NFA& nfa, const StateClassInfos& curre
             auto neighbour_state = GetDestinationsByString(nfa, state, letter);
             assert(neighbour_state.size() == 1);
 
-            transition_table[state].push_back(current_stage_classes.at(*neighbour_state.cbegin()));
+            class_to_class_transition_table[state].push_back(current_stage_classes.at(*neighbour_state.cbegin()));
         }
     }
 
@@ -98,7 +98,7 @@ StateClassInfos GetNextStageClasses(const NFA& nfa, const StateClassInfos& curre
     for (const auto& state : nfa.GetStatesId())
     {
         StateAndNeighboursClasses nearest_classes = {.class_id_ = current_stage_classes.at(state),
-                                                     .neighbours_classes_ = transition_table[state]};
+                                                     .neighbours_classes_ = class_to_class_transition_table[state]};
 
         if (new_classes.contains(nearest_classes))
         {

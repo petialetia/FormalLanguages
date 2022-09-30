@@ -36,7 +36,7 @@ void MakeTransitionsSingleLetter(NFA& nfa)
 
                     assert(std::next(added_states_iterator, 1) == added_states.cend());
 
-                    transitions_to_add.insert({{*added_states_iterator, destination_state_id}, std::string(1, string[string.length() - 1])});
+                    transitions_to_add.insert({{*added_states_iterator, destination_state_id}, string[string.length() - 1]});
                 }
             }
         }
