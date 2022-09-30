@@ -29,9 +29,7 @@ std::size_t TransitionHash::operator()(const Transition& transition) const {
   std::size_t seed = 0;
   boost::hash_combine(seed, transition.edge_.start_);
   boost::hash_combine(seed, transition.edge_.destination_);
-  boost::hash_combine(seed,
-                      std::hash<decltype(transition.edge_.destination_)>()(
-                          transition.edge_.destination_));
+  boost::hash_combine(seed, std::hash<std::string>()(transition.string_));
 
   return seed;
 }

@@ -13,7 +13,7 @@ struct UnorderedSetHash {
     std::size_t seed = 0;
 
     for (auto iterator = set.cbegin(); iterator != set.cend(); iterator++) {
-      boost::hash_combine(seed, boost::hash_value(*iterator));
+      seed ^= boost::hash_value(*iterator);
     }
 
     return seed;

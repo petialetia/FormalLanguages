@@ -57,8 +57,9 @@ START_OVER:
                                     (*second_edge_iterator).destination_};
         nfa.AddTransition({new_transition_edge, EPSILON});
         epsilon_transitions.insert(new_transition_edge);
-        goto START_OVER;  // Iterators invalidated, plus we have new epsilon
-                          // transition, so we need to start from the begining
+        goto START_OVER;  // Iterators invalidated, plus we have new
+                          // epsilon transition, so we need to start from
+                          // the begining
       }
     }
   }
@@ -81,8 +82,8 @@ START_OVER:
         final_states.insert(state_id);
         nfa.MakeStateFinal(state_id);
         goto START_OVER;  // New final state can make another state final,
-                          // but we could check it before, so we need to start
-                          // over
+                          // but we could check it before, so we need to
+                          // start over
       }
     }
   }
@@ -108,9 +109,9 @@ START_OVER:
           nfa.AddTransition(new_transition);
           is_start_over_needed =
               true;  // we added new transition,
-                     // that means we could add another transition from
-                     // different state, but we could process needed epsilon
-                     // edge and state already
+                     // that means we could add another transition
+                     // from different state, but we could process
+                     // needed epsilon edge and state already
         }
       }
     }
