@@ -9,5 +9,5 @@ elif [[($TARGET == "--coverage")]]
 then
     xdg-open build/ccov/Tests/index.html
 else
-    ./bin/MolecularBox.out
+    ./bin/Main.out
 fi
