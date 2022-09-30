@@ -14,8 +14,8 @@ void ChangeToCDFA(NFA& nfa)
 
     auto final_states = nfa.GetFinalStatesId();
 
-    std::unordered_map<StateId, std::unordered_set<StateId>> composit_states_info;
-    std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>> composit_destinations_info;
+    CompositStatesInfo composit_states_info;
+    CompositDestinationsInfo composit_destinations_info;
 
     auto transitions_table = ProcessNormalStates(nfa, composit_states_info, composit_destinations_info, final_states, sink_id);
 
@@ -24,11 +24,11 @@ void ChangeToCDFA(NFA& nfa)
     DeleteUnreachableStates(nfa);
 }
 
-std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>>> ProcessNormalStates(NFA& nfa, std::unordered_map<StateId, std::unordered_set<StateId>>& composit_states_info,
-                                                                                                       std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>>& composit_destinations_info,
-                                                                                                       std::unordered_set<StateId>& final_states, StateId sink_id)
+TransitionTable ProcessNormalStates(NFA& nfa, CompositStatesInfo& composit_states_info,
+                                    CompositDestinationsInfo& composit_destinations_info,
+                                    std::unordered_set<StateId>& final_states, StateId sink_id)
 {
-    std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>>> transitions_table;
+    TransitionTable transitions_table;
 
     for (const auto& current_state_id : nfa.GetStatesId())
     {
@@ -80,9 +80,10 @@ std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>
     return transitions_table;
 }
 
-StateId AddCompositState(NFA& nfa, const std::unordered_set<StateId>& states, const std::unordered_set<StateId>& final_states,
-                         std::unordered_map<StateId, std::unordered_set<StateId>>& composit_states_info,
-                         std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>>& composit_destinations_info)
+StateId AddCompositState(NFA& nfa, const std::unordered_set<StateId>& states, 
+                         const std::unordered_set<StateId>& final_states,
+                         CompositStatesInfo& composit_states_info,
+                         CompositDestinationsInfo& composit_destinations_info)
 {
     StateId new_composit_state_id = 0;
 
@@ -105,10 +106,10 @@ STATE_IS_ADDED:
     return new_composit_state_id;
 }
 
-void ProcessCompositStates(NFA& nfa, std::unordered_map<StateId, std::unordered_set<StateId>>& composit_states_info,
-                           std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>>& composit_destinations_info,
+void ProcessCompositStates(NFA& nfa, CompositStatesInfo& composit_states_info,
+                           CompositDestinationsInfo& composit_destinations_info,
                            std::unordered_set<StateId>& final_states, StateId sink_id,
-                           std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>>>& transitions_table)
+                           TransitionTable& transitions_table)
 {
     std::deque<StateId> queue_for_procession; // all composite states will be processed in order of this queue
 

@@ -23,19 +23,23 @@ struct UnorderedSetHash
     }
 };
 
+using CompositStatesInfo = std::unordered_map<StateId, std::unordered_set<StateId>>;
+using CompositDestinationsInfo = std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>>;
+using TransitionTable = std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>>>;
+
 void ChangeToCDFA(NFA& nfa);
 
-std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>>> ProcessNormalStates(NFA& nfa, std::unordered_map<StateId, std::unordered_set<StateId>>& new_states_info,
-                                                                                                       std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>>& new_destinations_info,
-                                                                                                       std::unordered_set<StateId>& final_states, StateId sink_id);
+TransitionTable ProcessNormalStates(NFA& nfa, CompositStatesInfo& new_states_info,
+                                    CompositDestinationsInfo& new_destinations_info,
+                                    std::unordered_set<StateId>& final_states, StateId sink_id);
 
 StateId AddCompositState(NFA& nfa, const std::unordered_set<StateId>& states, const std::unordered_set<StateId>& final_states,
-                         std::unordered_map<StateId, std::unordered_set<StateId>>& composit_states_info,
-                         std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>>& composit_destinations_info);
+                         CompositStatesInfo& composit_states_info,
+                         CompositDestinationsInfo& composit_destinations_info);
 
-void ProcessCompositStates(NFA& nfa, std::unordered_map<StateId, std::unordered_set<StateId>>& new_states_info,
-                           std::unordered_map<std::unordered_set<StateId>, StateId, UnorderedSetHash<StateId>>& new_destinations_info,
+void ProcessCompositStates(NFA& nfa, CompositStatesInfo& new_states_info,
+                           CompositDestinationsInfo& new_destinations_info,
                            std::unordered_set<StateId>& final_states, StateId sink_id,
-                           std::unordered_map<StateId, std::unordered_map<char, std::unordered_set<StateId>>>& transitions_table);
+                           TransitionTable& transitions_table);
 
 #endif /* CDFA_HPP */
