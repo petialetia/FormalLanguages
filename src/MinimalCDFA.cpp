@@ -1,4 +1,4 @@
-#include <MinimalDFA.hpp>
+#include <MinimalCDFA.hpp>
 
 bool StateAndNeighboursClasses::operator==(const StateAndNeighboursClasses& other) const
 {
@@ -33,9 +33,9 @@ size_t GetNumOfClasses(const StateClassInfos& class_infos)
     return classes.size();
 }
 
-void ChangeToMinimalDFA(NFA& nfa)
+void ChangeToMinimalCDFA(NFA& nfa)
 {
-    ChangeToDFA(nfa);
+    ChangeToCDFA(nfa);
 
     auto current_stage_classes = GetStartClasses(nfa);
 

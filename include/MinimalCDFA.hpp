@@ -1,10 +1,10 @@
-#ifndef MINIMAL_DFA_HPP
-#define MINIMAL_DFA_HPP
+#ifndef MINIMAL_CDFA_HPP
+#define MINIMAL_CDFA_HPP
 
 #include "NFA.hpp"
 #include "EpsilonTransitionsRemoving.hpp"
 #include "SingleLetterTransitions.hpp"
-#include "DFA.hpp"
+#include "CDFA.hpp"
 
 using ClassId = size_t;
 
@@ -25,7 +25,7 @@ struct StateAndNeighboursClassesHash
 
 size_t GetNumOfClasses(const StateClassInfos& class_infos);
 
-void ChangeToMinimalDFA(NFA& nfa);
+void ChangeToMinimalCDFA(NFA& nfa);
 
 StateClassInfos GetStartClasses(const NFA& nfa);
 
@@ -33,4 +33,4 @@ StateClassInfos GetNextStageClasses(const NFA& nfa, const StateClassInfos& curre
 
 void MergeStates(NFA& nfa, StateId base_state, StateId state_to_attach);
 
-#endif /* MINIMAL_DFA_HPP */
+#endif /* MINIMAL_CDFA_HPP */

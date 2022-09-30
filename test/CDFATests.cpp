@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include <DFA.hpp>
+#include <CDFA.hpp>
 
-TEST(ChangeToDFA, AlreadyDFA1)
+TEST(ChangeToCDFA, AlreadyCDFA1)
 {
     NFA nfa({'a', 'b'});
 
@@ -11,7 +11,7 @@ TEST(ChangeToDFA, AlreadyDFA1)
     nfa.AddTransition({{start_state, start_state}, "a"});
     nfa.AddTransition({{start_state, start_state}, "b"});
 
-    ChangeToDFA(nfa);
+    ChangeToCDFA(nfa);
 
     EXPECT_TRUE(nfa.IsValid());
 
@@ -23,7 +23,7 @@ TEST(ChangeToDFA, AlreadyDFA1)
     EXPECT_TRUE(nfa.IsTransition({{new_start_state, new_start_state}, "b"}));
 }
 
-TEST(ChangeToDFA, AlreadyDFA2)
+TEST(ChangeToCDFA, AlreadyCDFA2)
 {
     NFA nfa({'a', 'b'});
 
@@ -35,7 +35,7 @@ TEST(ChangeToDFA, AlreadyDFA2)
     nfa.AddTransition({{second_state, start_state}, "a"});
     nfa.AddTransition({{second_state, start_state}, "b"});
 
-    ChangeToDFA(nfa);
+    ChangeToCDFA(nfa);
 
     EXPECT_TRUE(nfa.IsValid());
 
@@ -45,7 +45,7 @@ TEST(ChangeToDFA, AlreadyDFA2)
     EXPECT_EQ(nfa[new_start_state][new_start_state].size(), 0);
 }
 
-TEST(ChangeToDFA, Complicated1)
+TEST(ChangeToCDFA, Complicated1)
 {
     auto nfa = NFA({'a', 'b'});
 
@@ -62,12 +62,12 @@ TEST(ChangeToDFA, Complicated1)
     nfa.AddTransition({{fouth, fifth}, "b"});
     nfa.AddTransition({{fifth, third}, "b"});
 
-    ChangeToDFA(nfa);
+    ChangeToCDFA(nfa);
 
     EXPECT_TRUE(nfa.IsValid());
 }
 
-TEST(ChangeToDFA, Complicated2)
+TEST(ChangeToCDFA, Complicated2)
 {
     auto nfa = NFA({'a', 'b', 'c'});
 
@@ -93,7 +93,7 @@ TEST(ChangeToDFA, Complicated2)
     nfa.AddTransition({{second, sixth}, "c"});
     nfa.AddTransition({{third, fouth}, "c"});
 
-    ChangeToDFA(nfa);
+    ChangeToCDFA(nfa);
 
     EXPECT_TRUE(nfa.IsValid());
 }

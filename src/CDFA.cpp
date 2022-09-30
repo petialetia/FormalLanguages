@@ -1,6 +1,6 @@
-#include <DFA.hpp>
+#include <CDFA.hpp>
 
-void ChangeToDFA(NFA& nfa)
+void ChangeToCDFA(NFA& nfa)
 {
     RemoveEpsilonTransitions(nfa);
     MakeTransitionsSingleLetter(nfa);

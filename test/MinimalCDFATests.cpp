@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include <MinimalDFA.hpp>
+#include <MinimalCDFA.hpp>
 
 #include <optional>
 
-TEST(ChangeToMinimalDFA, Correctness)
+TEST(ChangeToMinimalCDFA, Correctness)
 {
     auto nfa = NFA({'a', 'b'});
 
@@ -20,7 +20,7 @@ TEST(ChangeToMinimalDFA, Correctness)
     nfa.AddTransition({{first, third}, "a"});
     nfa.AddTransition({{second, third}, "a"});
 
-    ChangeToMinimalDFA(nfa);
+    ChangeToMinimalCDFA(nfa);
 
     EXPECT_TRUE(nfa.IsValid());
     EXPECT_EQ(nfa.GetFinalStatesId().size(), 1);

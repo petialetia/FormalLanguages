@@ -1,7 +1,7 @@
 #include <DOA.hpp>
 #include <PAL.hpp>
 #include <NFA.hpp>
-#include <MinimalDFA.hpp>
+#include <MinimalCDFA.hpp>
 
 int main()
 {
@@ -9,7 +9,7 @@ int main()
 
     SaveInDOA(nfa, "Start.doa");
 
-    ChangeToMinimalDFA(nfa);
+    ChangeToMinimalCDFA(nfa);
 
     SaveInDOA(nfa, "Changed.doa");
 

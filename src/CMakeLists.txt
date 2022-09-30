@@ -4,11 +4,11 @@ add_library(PAL STATIC PAL.cpp)
 add_library(EpsilonTransitionsRemoving STATIC EpsilonTransitionsRemoving.cpp)
 add_library(SingleLetterTransitions STATIC SingleLetterTransitions.cpp)
 
-add_library(DFA STATIC DFA.cpp)
-target_link_libraries(DFA EpsilonTransitionsRemoving SingleLetterTransitions)
+add_library(CDFA STATIC CDFA.cpp)
+target_link_libraries(CDFA EpsilonTransitionsRemoving SingleLetterTransitions)
 
-add_library(MinimalDFA MinimalDFA.cpp)
-target_link_libraries(MinimalDFA NFA DFA)
+add_library(MinimalCDFA MinimalCDFA.cpp)
+target_link_libraries(MinimalCDFA NFA CDFA)
 
 add_executable(Main Main.cpp)
-target_link_libraries(Main DOA MinimalDFA PAL)
+target_link_libraries(Main DOA MinimalCDFA PAL)
